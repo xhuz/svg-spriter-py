@@ -8,7 +8,7 @@ mod optimize;
 mod spriter;
 
 #[pyfunction]
-fn svg_spriter(svgs: Vec<HashMap<String, String>>, dest: String) {
+fn svg_sprite(svgs: Vec<HashMap<String, String>>, dest: String) {
     let optimized_svgs = svgs
         .iter()
         .map(|svg| {
@@ -32,8 +32,8 @@ fn svg_optimize(source: String) -> String {
 
 /// A Python module implemented in Rust.
 #[pymodule]
-fn svg_sprite_py(_py: Python, m: &PyModule) -> PyResult<()> {
-    m.add_function(wrap_pyfunction!(svg_spriter, m)?)?;
+fn svg_spriter_py(_py: Python, m: &PyModule) -> PyResult<()> {
+    m.add_function(wrap_pyfunction!(svg_sprite, m)?)?;
     m.add_function(wrap_pyfunction!(svg_optimize, m)?)?;
     Ok(())
 }
