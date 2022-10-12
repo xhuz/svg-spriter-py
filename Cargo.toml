@@ -1,0 +1,16 @@
+[package]
+name = "svg-sprite-py"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[lib]
+name = "svg_sprite_py"
+crate-type = ["cdylib"]
+
+[dependencies]
+pyo3 = { version = "0.17.1", features = ["extension-module"] }
+svgcleaner = "0.9.5"
+xmltree = "0.10.3"
+
+[features]
