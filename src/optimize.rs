@@ -39,7 +39,7 @@ pub fn optimize(raw: &String) -> String {
         remove_xmlns_xlink_attribute: false,
         remove_needless_attributes: true,
         remove_gradient_attributes: true,
-        join_style_attributes: StyleJoinMode::None,
+        join_style_attributes: StyleJoinMode::All,
         apply_transform_to_gradients: true,
         apply_transform_to_shapes: true,
         paths_to_relative: true,
