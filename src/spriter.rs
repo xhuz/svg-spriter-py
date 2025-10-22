@@ -2,8 +2,7 @@ use std::{collections::HashMap, fs, path::Path};
 
 use xmltree::{Element, EmitterConfig, Namespace, XMLNode};
 
-const EXCLUDE_ATTRS: [&str; 2] = ["fill", "stroke"];
-const WHITE_COLORS: [&str; 3] = ["white","#ffffff","#fff"];
+// const EXCLUDE_ATTRS: [&str; 2] = ["fill", "stroke"]; 
 
 #[derive(Debug)]
 pub struct Svg {
@@ -69,9 +68,7 @@ where
                 let mut new_ele = Element::new(element_name);
                 let attrs = &element.attributes;
                 attrs.iter().for_each(|(k, v)| {
-                    if !EXCLUDE_ATTRS.contains(&k.as_str()) || !WHITE_COLORS.contains(&v.as_str()) {
-                        new_ele.attributes.insert(k.to_string(), v.to_string());
-                    }
+                    new_ele.attributes.insert(k.to_string(), v.to_string());
                 });
 
                 element.children.into_iter().for_each(|child| match child {
