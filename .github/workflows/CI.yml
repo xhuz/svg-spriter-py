@@ -6,7 +6,7 @@ on:
       - main
       - master
     tags:
-      - "*"
+      - ["v*"]
   pull_request:
   workflow_dispatch:
 
@@ -91,10 +91,42 @@ jobs:
             target: x86
     steps:
       - uses: actions/checkout@v4
+      - name: Setup MSVC
+        if: runner.os == 'Windows'
+        uses: microsoft/setup-msbuild@v2
+        with:
+          msbuild-architecture: ${{ matrix.platform.target }}
       - uses: actions/setup-python@v5
         with:
           python-version: 3.x
           architecture: ${{ matrix.platform.target }}
+      - name: Disable Python App Execution Aliases
+        if: runner.os == 'Windows'
+        shell: powershell
+        run: |
+          $aliasDir = "$env:LOCALAPPDATA\Microsoft\WindowsApps"
+          Write-Host "Cleaning Python aliases in $aliasDir"
+
+          @("python.exe", "python3.exe") | ForEach-Object {
+            $file = "$aliasDir\$_"
+            if (Test-Path $file) {
+              Write-Host "Removing: $file"
+              Remove-Item $file -Force -ErrorAction Continue
+            }
+          }
+
+          # 确保 Python 路径优先
+          $pythonPath = (Get-Command python -ErrorAction SilentlyContinue).Path
+          if ($pythonPath) {
+            $pythonDir = Split-Path $pythonPath
+            $newPath = "$pythonDir;$env:PATH"
+            $env:PATH = $newPath
+          }
+
+          Write-Host "Final python3:"
+          where.exe python3
+          python3 --version
+
       - name: Build wheels
         uses: PyO3/maturin-action@v1
         with:
