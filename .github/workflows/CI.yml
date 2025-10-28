@@ -51,6 +51,7 @@ jobs:
 
   musllinux:
     runs-on: ${{ matrix.platform.runner }}
+    timeout-minutes: 45
     strategy:
       matrix:
         platform:
